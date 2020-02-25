@@ -3,6 +3,7 @@
 #include "logging.h"
 #include "helper.h"
 #include "settings.h"
+#include "cdecrypt.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -26,11 +27,6 @@ void MainWindow::initialize()
     ui->actionCemuIntegrate->setChecked(Settings::value("cemu/enabled").toBool());
     ui->actionCemuFullscreen->setChecked(Settings::value("cemu/fullscreen").toBool());
     ui->actionGamepad->setChecked(Settings::value("Gamepad/enabled").toBool());
-
-    if (Settings::value("cemu/coversDir").toString().isEmpty())
-    {
-        Settings::setValue("cemu/coversDir", QDir(Settings::getdirpath()).filePath("covers"));
-    }
 
     setupConnections();
     Gamepad::initialize();
@@ -74,6 +70,18 @@ void MainWindow::downloadCemuId(QString id, QString ver)
         DownloadQueue::instance->add(qinfo);
     }
 
+    connect(qinfo, &QueueInfo::finished, [=]
+    {
+        connect(crypto, &CemuCrypto::Progress, qinfo, &QueueInfo::updateProgress);
+        //watcher->setFuture(QtConcurrent::run(crypto, &CemuCrypto::Start));
+
+        QByteArray ba = key.toLocal8Bit();
+        char *key = ba.data();
+        QByteArray bb = qinfo->directory.toLocal8Bit();
+        char *dir = ba.data();
+        cdecrypt(key, dir);
+    });
+
     connect(watcher, &QFutureWatcher<void>::finished, this, [=]
     {
         disconnect(crypto, &CemuCrypto::Progress, qinfo, &QueueInfo::updateProgress);
@@ -83,12 +91,6 @@ void MainWindow::downloadCemuId(QString id, QString ver)
         ui->downloadQueueTableWidget->removeRow(row);
         ui->downloadQueueTableWidget->horizontalHeader()->setStretchLastSection(true);
         ui->downloadQueueTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    });
-
-    connect(qinfo, &QueueInfo::finished, [=]
-    {
-        connect(crypto, &CemuCrypto::Progress, qinfo, &QueueInfo::updateProgress);
-        watcher->setFuture(QtConcurrent::run(crypto, &CemuCrypto::Start));
     });
 }
 
@@ -143,7 +145,7 @@ void MainWindow::downloadQueueAdd(QueueInfo *info)
     ui->downloadQueueTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
-void MainWindow::updateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal, QTime qtime)
+void MainWindow::updateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal, QElapsedTimer qtime)
 {
     float percent = Helper::CalculatePrecent(bytesReceived, bytesTotal);
     auto speed = Helper::CalculateSpeed(bytesReceived, qtime);

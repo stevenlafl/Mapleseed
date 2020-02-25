@@ -273,13 +273,13 @@ qint32 CemuCrypto::Decrypt(char* TMD, const char* TIK, const QString& basedir)
     memset(iv, 0, sizeof(iv));
 
     QString _str;
-    _str = basedir + QString().sprintf("/%08x.app", bs32(tmd->Contents[0].ID));
+    _str = basedir + QString::asprintf("/%08x.app", bs32(tmd->Contents[0].ID));
 
     quint32 CNTLen;
     char* CNT = ReadFile(_str, &CNTLen);
     if (CNT == static_cast<char*>(nullptr))
     {
-        _str = basedir + QString().sprintf("/%08x", bs32(tmd->Contents[0].ID));
+        _str = basedir + QString::asprintf("/%08x", bs32(tmd->Contents[0].ID));
         CNT = ReadFile(_str, &CNTLen);
         if (CNT == static_cast<char*>(nullptr))
         {
@@ -372,7 +372,7 @@ qint32 CemuCrypto::Decrypt(char* TMD, const char* TIK, const QString& basedir)
                 CNTOff <<= 5;
             }
 
-            auto msg(QString().sprintf("Size:%1 Offset:0x%2 CID:%3 U:%4 %5", CNTSize, CNTOff, bs16(fe[i].ContentID), bs16(fe[i].Flags), Path));
+            auto msg(QString::asprintf("Size:%1 Offset:0x%2 CID:%3 U:%4 %5", CNTSize, CNTOff, bs16(fe[i].ContentID), bs16(fe[i].Flags), Path));
             qInfo() << msg.arg(CNTSize).arg(CNTOff).arg(bs16(fe[i].ContentID)).arg(bs16(fe[i].Flags)).arg(Path);
 
             quint32 ContFileID = bs32(tmd->Contents[bs16(fe[i].ContentID)].ID);
@@ -380,7 +380,7 @@ qint32 CemuCrypto::Decrypt(char* TMD, const char* TIK, const QString& basedir)
             auto fei = fe[i];
             if (!(fei.u1.s1.Type & 0x80))
             {
-                QString filepath = basedir + QString().sprintf("/%08x", ContFileID);
+                QString filepath = basedir + QString::asprintf("/%08x", ContFileID);
                 QFile* in = new QFile(filepath);
                 if (!in->open(QIODevice::ReadOnly))
                 {

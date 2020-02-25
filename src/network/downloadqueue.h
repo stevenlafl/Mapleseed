@@ -27,7 +27,7 @@ signals:
     void OnEnqueue(QueueInfo *info);
     void OnDequeue(QueueInfo *info);
     void QueueFinished(QList<QueueInfo*> history);
-    void DownloadProgress(qint64 received, qint64 total, QTime time);
+    void DownloadProgress(qint64 received, qint64 total, QElapsedTimer time);
 
 public slots:
     void progress(qint64 received, qint64 total);
@@ -35,7 +35,7 @@ public slots:
 private:
     QList<QueueInfo*> history;
     QQueue<QueueInfo*> queue;
-    QTime downloadTime;
+    QElapsedTimer downloadTime;
 };
 
 #endif // NETWORK_H

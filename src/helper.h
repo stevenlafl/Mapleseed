@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QApplication>
 #include <QClipboard>
+#include <QElapsedTimer>
 #include "settings.h"
 #include "network/downloadqueue.h"
 #include "cemu/library.h"
@@ -23,7 +24,7 @@ public:
         return (static_cast<float>(min) / static_cast<float>(max)) * 100;
     }
 
-    static QString CalculateSpeed(qint64 received, QTime qtime)
+    static QString CalculateSpeed(qint64 received, QElapsedTimer qtime)
     {
         double speed = received * 1000.0 / qtime.elapsed();
         QString unit;
@@ -205,7 +206,7 @@ public:
         qinfo->totalSize = 0;
         for (int i = 0; i < contentCount; i++)
         {
-            QString contentID = QString().sprintf("%08x", CemuCrypto::bs32(tmd->Contents[i].ID));
+            QString contentID = QString::asprintf("%08x", CemuCrypto::bs32(tmd->Contents[i].ID));
             QString contentPath = QDir(directory).filePath(contentID);
             QString downloadURL = baseURL + info->id().toUpper() + QString("/") + contentID;
             qulonglong size = CemuCrypto::bs64(tmd->Contents[i].Size);

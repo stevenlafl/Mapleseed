@@ -83,7 +83,7 @@ QVariant CemuLibrary::processItem(const QString &d)
     auto self = CemuLibrary::instance;
     if (!self)
     {
-        return NULL;
+        return QString();
     }
     QString directory(Settings::value("cemu/library").toString());
 

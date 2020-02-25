@@ -62,14 +62,14 @@ struct TitleInfo
         QString code(getProductCode());
         QString cover;
 
-        QDir directory(Settings::value("cemu/coversDir").toString());
+        QDir dir("covers");
         QStringList nameFilter("*" + code + "*.jpg");
-        QStringList list = directory.entryList(nameFilter);
+        QStringList list = dir.entryList(nameFilter);
         if (list.count() > 0){
-            cover = directory.filePath(list.first());
+            cover = dir.filePath(list.first());
         }
         else {
-            cover = directory.filePath("!.jpg");
+            cover = dir.filePath("!.jpg");
         }
 
         return cover;

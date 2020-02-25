@@ -39,7 +39,7 @@ private slots:
 
       void downloadQueueAdd(QueueInfo *info);
 
-      void updateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal, QTime qtime);
+      void updateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal, QElapsedTimer qtime);
 
       void updateCemuCryptoProgress(int curfile, int maxfiles);
 

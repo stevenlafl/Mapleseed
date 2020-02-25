@@ -12,7 +12,7 @@
 #include <QMap>
 #include <QTimer>
 #include <QProgressBar>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QQueue>
 #include <QUrl>
 #include <QEventLoop>

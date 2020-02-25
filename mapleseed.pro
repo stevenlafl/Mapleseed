@@ -32,6 +32,7 @@ FORMS += \
         mainwindow.ui
 
 SOURCES += \
+        src/cdecrypt.cpp \
         src/cemu/QtCompressor.cpp \
         src/cemu/crypto.cpp \
         src/cemu/database.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
         src/network/queueinfo.cpp
 
 HEADERS += \
+    src/cdecrypt.h \
         src/cemu/QtCompressor.h \
         src/cemu/crypto.h \
         src/cemu/database.h \
@@ -65,11 +67,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 contains(QT_ARCH, x86_64) {
-unix|win32: LIBS += -LC:/OpenSSL-v111-Win64/lib/ -llibcrypto
-INCLUDEPATH += C:/OpenSSL-v111-Win64/include
-DEPENDPATH += C:/OpenSSL-v111-Win64/include
+unix|win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x64/lib/ -llibcrypto
+INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
+DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
 } else {
-unix|win32: LIBS += -LC:/OpenSSL-v111-Win32/lib/ -llibcrypto
-INCLUDEPATH += C:/OpenSSL-v111-Win32/include
-DEPENDPATH += C:/OpenSSL-v111-Win32/include
+unix|win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x86/lib/ -llibcrypto
+INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
+DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
 }
