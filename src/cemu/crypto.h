@@ -9,8 +9,8 @@
 #include <QFile>
 #include <QDataStream>
 
-#include <openssl\aes.h>
-#include <openssl\sha.h>
+#include <openssl/aes.h>
+#include <openssl/sha.h>
 
 class CemuCrypto : public QObject
 {

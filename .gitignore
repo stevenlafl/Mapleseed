@@ -48,3 +48,10 @@ bin
 mapleseed.rc
 /resources/binaries
 /bin-32
+
+# Leftovers
+*.stash
+*.json
+*.log
+ui_mainwindow.h
+MapleSeed

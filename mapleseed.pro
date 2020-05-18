@@ -67,11 +67,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 contains(QT_ARCH, x86_64) {
-unix|win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x64/lib/ -llibcrypto
-INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
-DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
+win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x64/lib/ -llibcrypto
+win32: INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
+win32: DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x64/include
 } else {
-unix|win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x86/lib/ -llibcrypto
-INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
-DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
+win32: LIBS += -LC:/Qt/Tools/OpenSSL/Win_x86/lib/ -llibcrypto
+win32: INCLUDEPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
+win32: DEPENDPATH += C:/Qt/Tools/OpenSSL/Win_x86/include
 }
+
+unix: LIBS += -lcrypto

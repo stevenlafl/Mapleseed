@@ -99,14 +99,15 @@ void MainWindow::executeCemu(QString rpxPath)
     QFileInfo rpx(rpxPath);
     if (rpx.exists())
     {
-        QString args("-g \"" + rpx.filePath() + "\"");
+        QStringList args;
+        args << "-g \"" + rpx.filePath() + "\"";
         if (Settings::value("cemu/fullscreen").toBool())
         {
-            args.append(" -f");
+            args << " -f";
         }
         QString file(Settings::value("cemu/path").toString());
         process->setWorkingDirectory(QFileInfo(file).dir().path());
-        process->setNativeArguments(args);
+        process->setArguments(args);
         process->setProgram(file);
         process->start();
     }
